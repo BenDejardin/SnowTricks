@@ -13,8 +13,8 @@ class Videos
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $url = null;
+    #[ORM\Column(length: 500)]
+    private ?string $iframe = null;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false)]
@@ -25,24 +25,24 @@ class Videos
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getIframe(): ?string
     {
-        return $this->url;
+        return $this->iframe;
     }
 
-    public function setUrl(string $url): static
+    public function setIframe(string $iframe): static
     {
-        $this->url = $url;
+        $this->iframe = $iframe;
 
         return $this;
     }
 
-    public function getTrick(): ?Tricks
+    public function getTricks(): ?Tricks
     {
         return $this->trick;
     }
 
-    public function setTrick(?Tricks $trick): static
+    public function setTricks(?Tricks $trick): static
     {
         $this->trick = $trick;
 

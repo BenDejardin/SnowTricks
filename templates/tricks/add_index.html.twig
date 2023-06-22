@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TricksController!{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {# <form action="{{ path('add_trick') }}" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label text-light">Nom du tricks :</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label text-light">Description :</label>
+                    <textarea id="description" name="description" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="group" class="form-label text-light">Groupe :</label>
+                    <select id="group" name="group" class="form-select" required>
+                        {% for group in groups %}
+                            <option value="{{ group.id }}">{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="illustration" class="form-label text-light">Illustration(s) :</label>
+                    <input type="file" id="illustration" name="illustration[]" class="form-control" multiple required>
+                </div>
+                <div class="mb-3">
+                    <label for="video" class="form-label text-light">Vidéo(s) :</label>
+                    <input type="text" id="video" name="video" class="form-control" required>
+                    <small class="form-text text-muted">Collez ici le lien Youtube.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </form> #}
+
+            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.id_group) }}
+                {{ form_row(form.images) }}
+                {{ form_row(form.videos) }}
+                <button type="submit" class="btn btn-primary">Créer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,3 +1,11 @@
-app_home:
-   path: /home
+home:
+   path: /
    controller: App\Controller\HomeController::index
+
+tricks:
+   path: /tricks
+   controller: App\Controller\TricksController::indexTricks
+
+add_trick:
+   path: /trick/add
+   controller: App\Controller\TricksController::indexAdd
