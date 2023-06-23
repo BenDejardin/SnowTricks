@@ -1,0 +1,23 @@
+.navbar {
+    background-color: #f8f9fa;
+  }
+  
+  .navbar-brand {
+    margin-left: 15px;
+  }
+  
+  .navbar-nav {
+    margin-right: 15px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .fullscreen-image {
+    background-image: url('../img/background_accueil.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: calc(100vh - 56px); /* Soustrait la hauteur de la navbar (56px) */
+  }
