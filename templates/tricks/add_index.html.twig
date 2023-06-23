@@ -1,51 +1,67 @@
+{# templates/trick/add.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TricksController!{% endblock %}
+{% block title %}Ajouter un Trick{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            {# <form action="{{ path('add_trick') }}" method="POST">
-                <div class="mb-3">
-                    <label for="name" class="form-label text-light">Nom du tricks :</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label text-light">Description :</label>
-                    <textarea id="description" name="description" class="form-control" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="group" class="form-label text-light">Groupe :</label>
-                    <select id="group" name="group" class="form-select" required>
-                        {% for group in groups %}
-                            <option value="{{ group.id }}">{{ group.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="illustration" class="form-label text-light">Illustration(s) :</label>
-                    <input type="file" id="illustration" name="illustration[]" class="form-control" multiple required>
-                </div>
-                <div class="mb-3">
-                    <label for="video" class="form-label text-light">Vidéo(s) :</label>
-                    <input type="text" id="video" name="video" class="form-control" required>
-                    <small class="form-text text-muted">Collez ici le lien Youtube.</small>
-                </div>
-                <button type="submit" class="btn btn-primary">Créer</button>
-            </form> #}
-
-            {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+            {{ form_start(form) }}
                 {{ form_row(form.name) }}
                 {{ form_row(form.description) }}
                 {{ form_row(form.id_group) }}
                 {{ form_row(form.images) }}
-                {{ form_row(form.videos) }}
+
+                <div id="videos-container">
+                    {% set videoPrototype = form_widget(form.videos.vars.prototype) %}
+                    {% for videoIndex, videoField in form.videos %}
+                        {% set videoField = videoField|replace({'__name__': videoIndex}) %}
+                        {{ videoField.vars.block_prefixes[1] != 'hidden' ? form_row(videoField) }}
+                    {% endfor %}
+                </div>
+
+                <button type="button" class="btn btn-primary" id="add-video-button">Ajouter une vidéo</button>
                 <button type="submit" class="btn btn-primary">Créer</button>
-            {{ form_end(form) }}
+
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
-</div>
 
+    <script>
 
+        // Counter for video elements
+        var videoCounter = {{ form.videos|length }};
+
+        // Function to add a new video field
+        function addVideoField() {
+            var videoPrototype = '{{ videoPrototype|e('js') }}';
+            var newVideo = videoPrototype.replace(/__name__/g, videoCounter);
+            document.getElementById('videos-container').insertAdjacentHTML('beforeend', newVideo);
+            videoCounter++;
+        }
+
+        // Function to remove a video field
+        function removeVideoField(videoIndex) {
+            var videoField = document.getElementById('tricks_videos_' + videoIndex);
+            if (videoField) {
+                videoField.parentNode.parentNode.removeChild(videoField.parentNode);
+            }
+        }
+
+        // Event listener for the add video button
+        document.getElementById('add-video-button').addEventListener('click', function() {
+            addVideoField();
+        });
+
+        // Event listener for removing a video
+        document.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('remove-video-button')) {
+                var videoIndex = event.target.getAttribute('data-video-index');
+                removeVideoField(videoIndex);
+            }
+        });
+    </script>
 {% endblock %}

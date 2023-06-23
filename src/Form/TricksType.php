@@ -25,7 +25,6 @@ use App\Form\VideoType;
 
 class TricksType extends AbstractType
 {
-
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -45,7 +44,7 @@ class TricksType extends AbstractType
 
         $builder
             ->add('name', null, [
-                'label' => 'Nom du Tricks',
+                'label' => 'Nom du Trick',
                 'attr' => ['class' => 'form-control']
             ])
             ->add('description', null, [
@@ -64,16 +63,24 @@ class TricksType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['class' => 'form-control']
-            ]) 
-            ->add('videos', TextareaType::class, [
-                'label' => 'Video(s)',
-                'mapped' => false,
+            ])
+            ->add('videos', CollectionType::class, [
+                'label' => 'Vidéos',
+                'entry_type' => VideoType::class,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'prototype' => true,
+                'prototype_name' => '__video_prototype__',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
                 'required' => false,
-                'attr' => ['class' => 'form-control']
-            ]) 
-            ;
-            
 
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
