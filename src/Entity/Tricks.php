@@ -28,7 +28,7 @@ class Tricks
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'tricks')]
     private ?Group $group = null;
 
-    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Images::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Videos::class, orphanRemoval: true, cascade: ['persist'])]
@@ -124,7 +124,7 @@ class Tricks
     {
         if (!$this->images->contains($image)) {
             $this->images->add($image);
-            $image->setTricks($this);
+            $image->setTrick($this);
         }
 
         return $this;
@@ -134,8 +134,8 @@ class Tricks
     {
         if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
-            if ($image->getTricks() === $this) {
-                $image->setTricks(null);
+            if ($image->getTrick() === $this) {
+                $image->setTrick(null);
             }
         }
 
@@ -154,7 +154,7 @@ class Tricks
     {
         if (!$this->videos->contains($video)) {
             $this->videos->add($video);
-            $video->setTricks($this);
+            $video->setTrick($this);
         }
 
         return $this;
@@ -164,8 +164,8 @@ class Tricks
     {
         if ($this->videos->removeElement($video)) {
             // set the owning side to null (unless already changed)
-            if ($video->getTricks() === $this) {
-                $video->setTricks(null);
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
             }
         }
 

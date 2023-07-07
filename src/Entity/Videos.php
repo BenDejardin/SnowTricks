@@ -37,12 +37,12 @@ class Videos
         return $this;
     }
 
-    public function getTricks(): ?Tricks
+    public function getTrick(): ?Tricks
     {
         return $this->trick;
     }
 
-    public function setTricks(?Tricks $trick): static
+    public function setTrick(?Tricks $trick): static
     {
         $this->trick = $trick;
 

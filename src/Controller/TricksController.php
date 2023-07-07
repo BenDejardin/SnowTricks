@@ -48,11 +48,31 @@ class TricksController extends AbstractController
     }
 
     #[Route('/trick/add', name: 'add_trick')]
-    public function indexAdd(Request $request): Response
+    #[Route('/trick/edit/{id}', name: 'edit_trick')]
+    public function formTrick(Request $request, ?int $id = null): Response
     {
-        $trick = new Tricks();
+        $trick = null;
+        $edit = false;
+        if ($id !== null) {
+            // Récupérer le trick existant à modifier
+            $trick = $this->entityManager->getRepository(Tricks::class)->find($id);
+            if (!$trick) {
+                throw $this->createNotFoundException('Trick non trouvé.');
+            }
+            $edit = true;
+            $existingImages = [];
+            if ($trick !== null) {
+                foreach ($trick->getImages() as $image) {
+                    $existingImages[] = $image->getPath();
+            }
+        }
+            } else {
+                $trick = new Tricks();
+            }    
+            
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer les images soumises
@@ -80,12 +100,40 @@ class TricksController extends AbstractController
 
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
 
         return $this->render('tricks/add_index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/trick/{id}', name: 'trick_show')]
+    public function show($id): Response
+    {
+        $trick = $this->entityManager->getRepository(Tricks::class)->findOneBy(['id' => $id]);
+        
+        return $this->render('tricks/show.html.twig', [
+            'trick' => $trick
+        ]);
+    }
+
+    #[Route('/trick/delete/{id}', name: 'trick_delete')]
+    public function delete($id): Response
+    {
+        //Supprimer un trick et ses images et videos
+        $trick = $this->entityManager->getRepository(Tricks::class)->findOneBy(['id' => $id]);
+        $images = $this->entityManager->getRepository(Images::class)->findBy(['trick' => $id]);
+        $videos = $this->entityManager->getRepository(Videos::class)->findBy(['trick' => $id]);
+        foreach ($images as $image) {
+            $this->entityManager->remove($image);
+        }
+        foreach ($videos as $video) {
+            $this->entityManager->remove($video);
+        }
+        $this->entityManager->remove($trick);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('tricks');
     }
 
 }

@@ -8,4 +8,16 @@ tricks:
 
 add_trick:
    path: /trick/add
-   controller: App\Controller\TricksController::indexAdd
+   controller: App\Controller\TricksController::formTrick
+
+edit_trick:
+   path: /trick/edit/{id}
+   controller: App\Controller\TricksController::formTrick
+
+trick_show:
+   path: /trick/{id}
+   controller: App\Controller\TricksController::show
+
+trick_delete:
+   path: /trick/delete/{id}
+   controller: App\Controller\TricksController::delete

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trick{% endblock %}
+
+{% block body %}
+
+  <!-- Header avec image et boutons -->
+   <header class="header" style="background-image: url('../assets/img/{{trick.images[0].path}}');">
+    <div class="container">
+      <h1>{{trick.name}}</h1>
+      <div class="actions">
+        <a href="edit/{{trick.id}}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+        <a href="delete/{{trick.id}}" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flexbox -->
+  <section>
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-center">
+        
+        {% for img in trick.images %}
+            <div class="col-md-2 col-sm-6 box">
+                <img class="d-block w-25" src="../assets/img/{{img.path}}" alt="">
+            </div>
+        {% endfor %}
+        {% for video in trick.videos %}
+            <div class="col-md-2 col-sm-6 box">
+                {{video.iframe|raw}}
+            </div>
+        
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Description -->
+  <section>
+    <div class="container">
+      <p>Description</p>
+      <p>{{trick.description}}</p>
+    </div>
+  </section>
+
+  <!-- Flexbox pour les dates et groupe -->
+  <section>
+    <div class="container">
+      <div class="d-flex">
+        <div class="col-md-4">
+          <p>Date de création: </p>
+        </div>
+        <div class="col-md-4">
+          <p>Date de modification: </p>
+        </div>
+        <div class="col-md-4">
+          <p>Groupe de la figure: {{trick.idGroup.name}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <hr>
+
+  <!-- Formulaire et commentaires -->
+  <section>
+    <div class="container">
+      <h3>Commentaires</h3>
+      <form>
+        <div class="form-group">
+          <label for="comment">Votre commentaire:</label>
+          <textarea class="form-control" id="comment" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
+      </form>
+
+        <hr>
+
+        <div class="mt-4 d-flex align-items-start">
+            <img src="https://placeimg.com/640/480/any" class="rounded-circle" alt="Avatar" style="width: 50px; height: 50px;">
+            <div class="ms-3">
+                <div class="comment-box">
+                <h5 class="mt-0">Utilisateur 1</h5>
+                <p>Opera mota salus eum Cabillona perlato cubiculi Galli ut sunt eum Cabillona Eusebius seditionum insidiarum et et praedicto castra mota tuto verum Cabillona exitiosa perferens opera distributo in et periret sunt dilato ne in fiduciam perlato mota et acueret acueret praepotens quo verum Eusebius hoc fiduciam mota secum acueret hocque.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+
+
+
+    
+</div>
+        
+{% endblock %}

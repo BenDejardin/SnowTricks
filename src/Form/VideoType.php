@@ -16,7 +16,7 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('iframe', TextareaType::class, [
-                'label' => 'Iframe',
+                'label' => 'Coller le code d\'intégration de la vidéo ci dessous',
                 'attr' => ['class' => 'form-control'],
             ]);
     }

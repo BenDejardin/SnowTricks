@@ -65,20 +65,23 @@ class TricksType extends AbstractType
                 'attr' => ['class' => 'form-control']
             ])
             ->add('videos', CollectionType::class, [
-                'label' => 'Vidéos',
                 'entry_type' => VideoType::class,
                 'entry_options' => [
                     'label' => false,
                 ],
                 'allow_add' => true,
+
                 'allow_delete' => true,
                 'by_reference' => false,
-                'prototype' => true,
-                'prototype_name' => '__video_prototype__',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'required' => false,
+                'label' => ' ',
+                'mapped' => true,
+
+                // 'prototype' => true,
+                // 'prototype_name' => '__video_prototype__',
+                // 'attr' => [
+                //     'class' => 'form-control',
+                // ],
+                // 'required' => false,
 
             ]);
     }
