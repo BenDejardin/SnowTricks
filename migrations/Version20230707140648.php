@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230621192233 extends AbstractMigration
+final class Version20230707140648 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20230621192233 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE videos ADD url VARCHAR(255) NOT NULL, DROP iframe');
+        $this->addSql('ALTER TABLE user ADD username VARCHAR(100) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE videos ADD iframe LONGTEXT NOT NULL, DROP url');
+        $this->addSql('ALTER TABLE user DROP username');
     }
 }

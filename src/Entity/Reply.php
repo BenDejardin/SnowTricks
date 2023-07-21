@@ -14,7 +14,7 @@ class Reply
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'replies')]
+    #[ORM\ManyToOne(inversedBy: 'replies', cascade: ['persist'])]
     private ?Discussions $discussion = null;
 
     #[ORM\ManyToOne(inversedBy: 'replies')]
