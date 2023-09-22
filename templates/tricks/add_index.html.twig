@@ -1,88 +1,156 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ trick.id is defined ? 'Modifier' : 'Ajouter' }} un Trick{% endblock %}
+{% block title %}
+	{{ trick.id is defined ? 'Modifier' : 'Ajouter' }}
+	un Trick
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                {{ form_start(form) }}
-                <div class="form-group">
-                    {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.id_group, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                
-                <div class="form-group">
-                    {{ form_row(form.images, {'attr': {'class': 'form-control'}}) }}
-                </div>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				{{ form_start(form) }}
+				<h1 class="mb-4">{{ edit == true ? 'Modifier' : 'Ajouter' }}
+					un Trick</h1>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							{{ form_label(form.name, 'Nom du Trick', {'label_attr': {'class': 'control-label'}}) }}
+							{{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Nom du Trick'}}) }}
+							<div class="custom-form">
+								{{ form_errors(form.name) }}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							{{ form_label(form.id_group, 'Groupe', {'label_attr': {'class': 'control-label'}}) }}
+							{{ form_widget(form.id_group, {'attr': {'class': 'form-control', 'placeholder': 'Groupe'}}) }}
+							{{ form_errors(form.id_group) }}
+						</div>
+					</div>
+				</div>
 
-                <div class="form-group">
-                    <ul class="list-group videos"
-                        data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
-                        data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
-                    ></ul>
-                    <button type="button" class="add_item_link btn btn-primary mt-2" data-collection-holder-class="videos">Ajouter une vidéo</button>
-                </div>
+				<div class="row mt-3">
+					<div class="col-md-12">
+						<div class="form-group">
+							{{ form_label(form.description, 'Description', {'label_attr': {'class': 'control-label'}}) }}
+							{{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description', 'rows': '4'}}) }}
+							{{ form_errors(form.description) }}
+						</div>
+					</div>
+				</div>
 
-                <button type="submit" class="btn btn-primary">Créer</button>
+				<div class="row">
+					<div class="col-md-6">
+						<h2 class="mt-4 mb-3">Images associées :</h2>
+						<ul class="list-group images" data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+							{% if edit == true %}
+								{% for image in images %}
+									{% if image.path != "defaut.jpg" %}
+									<li class="list-group-item">
+										<input type="hidden" name="images[]" value="{{image.path}}"/>
+										<img src="../../assets/img/{{image.path}}" alt="{{ image.alt }}" class="img-fluid mt-2 mb-2" style="max-width: 200px;">
+										<button type="button" class="btn btn-danger remove-image">Supprimer cette image</button>
+									</li>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						</ul>
+						<button type="button" class="add_item_link btn btn-primary mt-3" data-collection-holder-class="images">Ajouter une image</button>
+					</div>
 
-                {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
+					<div class="col-md-6">
 
-    <script>
-        const addTagFormDeleteLink = (item) => {
-            const removeFormButton = document.createElement('button');
+						<h2 class="mt-4 mb-3">Vidéos associées :</h2>
+						<ul class="list-group videos" ata-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+							{% if edit == true %}
+								{% for video in form.videos %}
+									<li class="list-group-item">
+										<div class="form-group">
+											<label>Vidéo</label>
+											{{ form_row(video.iframe, {'attr': {'class': 'form-control', 'placeholder': 'URL de la vidéo', 'rows': '4'}}) }}
+										</div>
+										<div
+											class="video-preview">
+											<!-- Ajoutez ici le code pour afficher la vidéo -->
+											{{ video.iframe.vars.value|raw }}
+										</div>
+										<button type="button" class="btn btn-danger btn-sm mt-2 remove-video">Supprimer cette vidéo</button>
+									</li>
+								{% endfor %}
+							{% endif %}
+						</ul>
+
+						<button type="button" class="add_item_link btn btn-primary mt-3 ml-3" data-collection-holder-class="videos">Ajouter une vidéo</button>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary mt-4">{{ edit == true ? 'Modifier' : 'Créer' }}</button>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+
+	<script>
+    const addTagFormDeleteLink = (item) => {
+        const removeFormButton = document.createElement('button');
+        // Vérifier si c'est une image ou une vidéo
+        if (item.querySelector('input[type="file"]')) {
+            removeFormButton.innerText = 'Supprimer cette image';
+        } else {
             removeFormButton.innerText = 'Supprimer cette vidéo';
-            removeFormButton.className = 'btn btn-danger';
+        }
+        removeFormButton.className = 'btn btn-danger';
 
-            item.append(removeFormButton);
+        item.append(removeFormButton);
 
-            removeFormButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                // remove the li for the tag form
-                item.remove();
-            });
-        };
+        removeFormButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            // remove the li for the tag form
+            item.remove();
+        });
+    };
 
-        const addFormToCollection = (e) => {
-            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+    const addFormToCollection = (e) => {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
-            const item = document.createElement('li');
-            item.className = 'list-group-item';
+        const prototype = collectionHolder.dataset.prototype;
+        const index = collectionHolder.querySelectorAll('li.list-group-item').length; // Utiliser la longueur actuelle de la collection
 
-            item.innerHTML = collectionHolder
-                .dataset
-                .prototype
-                .replace(
-                    /__name__/g,
-                    collectionHolder.dataset.index
-                );
+        const item = document.createElement('li');
+        item.className = 'list-group-item';
 
-            collectionHolder.appendChild(item);
+        item.innerHTML = prototype.replace(/__name__/g, index);
 
-            collectionHolder.dataset.index++;
+        collectionHolder.appendChild(item);
 
-            // add a delete link to the new form
-            addTagFormDeleteLink(item);
-        };
+        // add a delete link to the new form
+        addTagFormDeleteLink(item);
+    };
 
-        document
-            .querySelectorAll('.add_item_link')
-            .forEach(btn => {
-                btn.addEventListener("click", addFormToCollection);
-            });
+    document.querySelectorAll('.add_item_link').forEach(btn => {
+        btn.addEventListener("click", addFormToCollection);
+    });
 
-        document
-            .querySelectorAll('ul.videos li')
-            .forEach((video) => {
-                addTagFormDeleteLink(video);
-            });
-    </script>
+    document.querySelectorAll('.list-group.videos .remove-video').forEach((removeButton) => {
+        removeButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Remove the li for the video form
+            const videoItem = e.currentTarget.closest('li.list-group-item');
+            videoItem.remove();
+        });
+    });
+
+    document.querySelectorAll('.list-group.images .remove-image').forEach((removeButton) => {
+        removeButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Remove the li for the image form
+            const imageItem = e.currentTarget.closest('li.list-group-item');
+            imageItem.remove();
+        });
+    });
+</script>
+
 {% endblock %}
