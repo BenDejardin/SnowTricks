@@ -45,3 +45,4 @@ reply:
 app_forgot_password_request: 
    path: /reset-password
    controller: App\Controller\ResetPasswordController::request
+
