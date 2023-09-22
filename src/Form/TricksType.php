@@ -34,14 +34,6 @@ class TricksType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $groupRepository = $this->entityManager->getRepository(Group::class);
-        $groups = $groupRepository->findAll();
-
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getName()] = $group->getId(); // ID en valeur, nom en libellé
-        }
-
         $builder
             ->add('name', null, [
                 'label' => 'Nom du Trick',
@@ -55,14 +47,18 @@ class TricksType extends AbstractType
                 'class' => Group::class,
                 'choice_label' => 'name',
                 'label' => 'Groupe',
+                'placeholder' => 'Sélectionnez un groupe',
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('images', FileType::class, [
-                'label' => 'Image(s)',
-                'multiple' => true,
+
+            ->add('images', CollectionType::class, [
+                'entry_type' => FileType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => ' ',
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['class' => 'form-control']
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoType::class,
@@ -75,14 +71,6 @@ class TricksType extends AbstractType
                 'by_reference' => false,
                 'label' => ' ',
                 'mapped' => true,
-
-                // 'prototype' => true,
-                // 'prototype_name' => '__video_prototype__',
-                // 'attr' => [
-                //     'class' => 'form-control',
-                // ],
-                // 'required' => false,
-
             ]);
     }
 
