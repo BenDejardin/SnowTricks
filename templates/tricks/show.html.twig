@@ -1,136 +1,155 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trick{% endblock %}
+{% block title %}
+	{{trick.name}}
+{% endblock %}
 
 {% block body %}
 
-  <!-- Header avec image et boutons -->
-   <header class="header" style="background-image: url('../assets/img/{{trick.images[0].path}}');">
-    <div class="container">
-      <h1>{{trick.name}}</h1>
-      {% if app.user %}
-      <div class="actions">
-        <a href="edit/{{trick.id}}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-        <a href="delete/{{trick.id}}" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
-      </div>
-      {% endif %}
-    </div>
-  </header>
+	<!-- Header avec image et boutons -->
+	{% if trick.images != '' %}
+		<header class="header" style="background-image: url('../assets/img/{{trick.images[0].path}}');">
+			<div class="container">
+				<h1>{{trick.name}}</h1>
+				{% if app.user and app.user.id == trick.createdBy.id %}
+					<div class="actions">
+						<a href="edit/{{trick.slug}}" class="btn btn-primary">
+							<i class="bi bi-pencil-square"></i>
+						</a>
+						<a href="delete/{{trick.id}}" class="btn btn-danger">
+							<i class="bi bi-trash3"></i>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+		</header>
+	{% endif %}
 
-  <!-- Flexbox -->
-  <section>
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-around">
-        
-        {% for img in trick.images %}
-            <div class="col-md-2 col-sm-6 box">
-                <img class="d-block" src="../assets/img/{{img.path}}" alt="">
-            </div>
-        {% endfor %}
-        {% for video in trick.videos %}
-            <div class="col-md-2 col-sm-6 box">
-                {{video.iframe|raw}}
-            </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
+	<!-- Flexbox -->
+	<section>
+		<div class="container">
+			<div class="d-flex flex-wrap justify-content-around">
 
-  <!-- Description -->
-  <section>
-    <div class="container">
-      <h3>Description</h3>
-      <p>{{trick.description}}</p>
-    </div>
-  </section>
+				{% for img in trick.images %}
+					{% if img.path != "defaut.jpg" %}
+						<div class="col-md-3 col-sm-6 box">
+							<img class="d-block" src="../assets/img/{{img.path}}" alt="">
+						</div>
+					{% endif %}
+				{% endfor %}
+				{% for video in trick.videos %}
+					<div class="col-md-3 col-sm-6 box">
+						{{video.iframe|raw}}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
 
-  <!-- Flexbox pour les dates et groupe -->
-  <section>
-    <div class="container">
-      <div class="d-flex">
-        <div class="col-md-4">
-          <p>Date de création: {{trick.createdAt|date('d/m/Y')}} </p>
-        </div>
-        <div class="col-md-4">
-          {# <p>Date de modification: </p> #}
-        </div>
-        <div class="col-md-4">
-          <p>Groupe de la figure: {{trick.idGroup.name}}</p>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Description -->
+	<section>
+		<div class="container mt-3">
+			<h3>Description</h3>
+			<p>{{trick.description}}</p>
+		</div>
+	</section>
 
-    <hr>
+	<!-- Flexbox pour les dates et groupe -->
+	<section>
+		<div class="container">
+			<div class="d-flex justify-content-evenly flex-wrap">
+				<div class="mt-3">
+					<span class="badge rounded-pill bg-secondary p-3">Date de création:
+						{{trick.createdAt|date('d/m/Y')}}
+					</span>
+				</div>
+				<div class="mt-3">
+					<span class="badge rounded-pill bg-secondary p-3">Groupe de la figure:
+						{{trick.idGroup.name}}</span>
+				</div>
+			</div>
+		</div>
+	</section>
 
-  <!-- Formulaire et commentaires -->
-  <section>
-    <div class="container">
-      <h3>Commentaires</h3>
-      {% if app.user %}
-      {{ form_start(form) }}
-        {{ form_row(form.content) }}
-        <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
-      {{ form_end(form) }}
-      <hr>
-      {% endif %}
+	<hr>
 
-      {% for discussion in discussions %}
-        <div class="mt-4 d-flex align-items-start">
-            <img src="../assets/img/{{discussion.author.avatar}}" class="rounded-circle" alt="Avatar" style="width: 90px; height: 90px; object-fit: contain;">
-            <div class="ms-3 d-flex flex-column justify-content-between">
-                <div class="comment-box">
-                    <h5 class="mt-0">{{discussion.author.username}}</h5>
-                    <p>{{discussion.content}}</p>
-                </div>
-            </div>
-            {% if app.user %}
-              <button type="button" id="{{discussion.id}}" class="btn btn-primary align-self-center repondre">Répondre</button>
-            {% endif %}
-        </div>
-        
-        {# Afficher les réponses sous chaque commentaire parent #}
-        {% for reply in discussion.replies %}
-            <div class="mt-4 reply d-flex align-items-start">
-              <img src="../assets/img/{{discussion.author.avatar}}" class="rounded-circle" alt="Avatar" style="width: 90px; height: 90px; object-fit: contain;">
-              <div class="ms-3 d-flex flex-column justify-content-between">
-                <div class="comment-box">
-                  <h5 class="mt-0">{{reply.author.username}}</h5>
-                  <!-- Afficher le contenu de la réponse -->
-                  <p>{{ reply.content }}</p>
-                </div>
-              </div>
-            </div>
-        {% endfor %}
-        <hr/>
-    {% endfor %}
+	<!-- Formulaire et commentaires -->
+	<section>
+		<div class="container">
+			<h3>Commentaires</h3>
+			{% if app.user %}
+				{{ form_start(form) }}
+				{{ form_row(form.content) }}
+				<button type="submit" class="btn btn-primary mt-3">Ajouter un commentaire</button>
+				{{ form_end(form) }}
+				<hr>
+			{% endif %}
 
-    <!-- Formulaire pour ajouter une réponse -->
-    {% if app.user %}
-        <div id="reply-form-container" style="display: none;">
-            {{ form_start(replyForm, {'attr': {'id': 'reply_form'}}) }}
-                {{ form_row(replyForm.content) }}
-                <button type="submit" class="btn btn-primary">Ajouter une réponse</button>
-            {{ form_end(replyForm) }}
-        </div>
-    {% endif %}
-    </div>
-  </section>
+			{% for discussion in discussions %}
+				<div class="mt-4">
+					<div class="d-flex align-items-start">
+						<img src="../assets/img/{{discussion.author.avatar}}" class="rounded-circle" alt="Avatar" style="width: 90px; height: 90px; object-fit: contain;">
+						<div class="ms-3 flex-grow-1">
+							<div class="comment-box">
+								<h5 class="mt-0">{{discussion.author.username}}</h5>
+								<p>{{discussion.content}}</p>
+							</div>
+							{% if app.user %}
+								<div class="mt-2">
+									<span class="text-primary cursor-pointer repondre-link" data-discussion-id="{{ discussion.id }}">Répondre</span>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+
+					{# Afficher les réponses sous chaque commentaire parent #}
+					{% if discussion.replies|length > 0 %}
+						<div class="ml-5">
+							{% for reply in discussion.replies %}
+								<div class="mt-2 reply">
+									<img src="../assets/img/{{reply.author.avatar}}" class="rounded-circle" alt="Avatar" style="width: 90px; height: 90px; object-fit: contain;">
+									<div class="ms-3 flex-grow-1">
+										<div class="comment-box">
+											<h5 class="mt-0">{{reply.author.username}}</h5>
+											<!-- Afficher le contenu de la réponse -->
+											<p>{{ reply.content }}</p>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<hr class="my-4">
+			{% endfor %}
+
+
+			<!-- Formulaire pour ajouter une réponse -->
+			{% if app.user %}
+				<div id="reply-form-container" style="display: none;">
+					{{ form_start(replyForm, {'attr': {'id': 'reply_form'}}) }}
+					{{ form_row(replyForm.content) }}
+					<button type="submit" class="btn btn-primary">Ajouter une réponse</button>
+					{{ form_end(replyForm) }}
+				</div>
+			{% endif %}
+		</div>
+	</section>
 </div>
 
 <script>
-    // Gérer l'affichage dynamique du formulaire de réponse
-    const replyButtons = document.querySelectorAll('.repondre');
-    const replyFormContainer = document.getElementById('reply-form-container');
+	// Gérer l'affichage dynamique du formulaire de réponse
+const replyButtons = document.querySelectorAll('.repondre-link');
+const replyFormContainer = document.getElementById('reply-form-container');
+const replyForm = document.getElementById('reply_form');
 
-    replyButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const discussionId = button.getAttribute('id');
-            const form = document.getElementById('reply_form');
-            form.action = './reply/' + discussionId;
-            replyFormContainer.style.display = 'block';
-        });
-    });
-</script>
-        
-{% endblock %}
+replyButtons.forEach((button) => {
+button.addEventListener('click', (event) => {
+event.preventDefault(); // Empêcher le comportement par défaut du lien
+
+const discussionId = button.getAttribute('data-discussion-id');
+replyForm.action = './reply/' + discussionId;
+replyFormContainer.style.display = 'block';
+});
+});
+</script>{% endblock %}

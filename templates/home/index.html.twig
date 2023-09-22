@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}SnowTricks{% endblock %}
 
 {% block body %}
+<a href="#" id="scroll-down-btn" class="btn btn-primary btn-lg scroll-down-btn" role="button" title="Descendre" data-bs-toggle="tooltip" data-bs-placement="left">
+    <i class="bi bi-arrow-down-circle"></i>
+</a>
 <div class="fullscreen-image"></div>
 
 <div class="container mt-3">
@@ -18,7 +21,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ trick.name }}</h5>
                         <p class="card-text">{{ trick.description }}</p>
-                        <a href="trick/{{ trick.id }}" class="btn btn-primary">Details</a>
+                        <a href="trick/{{ trick.slug }}" class="btn btn-primary">Details</a>
                     </div>
                 </div>
             </div>

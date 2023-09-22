@@ -3,10 +3,10 @@
 {% block title %}Tricks{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container mt-3">
         <h1>Tous les Tricks</h1>
 
-        <div class="row">
+        <div class="row mt-3">
             {% for trick in tricks %}
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ trick.name }}</h5>
                             <p class="card-text">{{ trick.description }}</p>
-                            <a href="trick/{{ trick.id }}" class="btn btn-primary">Details</a>
+                            <a href="trick/{{ trick.slug }}" class="btn btn-primary">Details</a>
                         </div>
                     </div>
                 </div>

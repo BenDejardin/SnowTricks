@@ -10,16 +10,31 @@ class Tricks extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Create and persist your group entities
-        $group1 = new Group();
-        $group1->setName('Sauts');
-        $manager->persist($group1);
+        $groups = [
+            'Figures de Base',
+            'Sauts',
+            'Grabs',
+            'Rotations',
+            'Inversions',
+            'Rails et Boxes',
+            'Slopestyle',
+            'Halfpipe',
+            'Freestyle Backcountry',
+            'Freeride',
+            'Big Air',
+            'Old School',
+        ];
 
-        $group2 = new Group();
-        $group2->setName('Pas Sauts');
-        $manager->persist($group2);
+        foreach ($groups as $groupName) {
+            $group = new Group();
+            $group->setName($groupName);
+            $tab[] = $group;
+            $manager->persist($group);
+        }
 
-        // Flush the changes to the database
+
+
+
         $manager->flush();
     }
 }

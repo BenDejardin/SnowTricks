@@ -34,6 +34,10 @@
     margin: 30px 0;
   }
 
+  .col-md-3.col-sm-6.box{
+    margin: 0 20px;
+  }
+
   .header {
     display: flex;
     flex-direction: column;
@@ -79,9 +83,118 @@ p.card-text {
   text-overflow: ellipsis;
 }
 
-.repondre{
+/* .repondre{
   position: absolute;
   right: 17%;
 }
+*/
+.reply {
+  margin-left: 50px;
+} 
+
+.navbar-brand{
+  font-size: 1.75rem;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
+
+.scroll-down-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+  /* transform: translateX(-50%); */
+}
+
+.images img{
+  width: 33%;
+  /* height: 50%; */
+}
+
+.mobile{
+  display: none;
+}
+
+.alert{
+  margin-bottom: 0;
+}
+
+.custom-form ul {
+  color: rgb(218, 14, 14); 
+  list-style: none;
+  padding: 0;
+}
+
+#tricks_images{
+  display: none;
+}
 
 
+/* Mobile 990px */
+@media (max-width: 990px) {
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px; 
+    background-color: #f8f9fa; 
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1); 
+    border-top: 1px solid #dee2e6; 
+    z-index: 9999; 
+  }
+
+  .navbar-toggler {
+    display: block; /* Affiche l'icône du menu sur les écrans mobiles */
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa; /* Change la couleur de fond pour le menu déroulant mobile */
+    padding: 8px; /* Ajoute un espacement pour le menu déroulant mobile */
+  }
+
+  .noMobile {
+    display: none !important;
+  }
+
+  .mobile{
+    display: initial;
+  }
+
+  a.nav-link.mobile > i, a.nav-link.mobile > svg{
+    font-size: 40px;
+  }
+
+  .navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    width: 100vw;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 8px; /* Ajoute un espacement entre les liens du menu déroulant */
+  }
+
+  .navbar-brand {
+    display: block;
+    text-align: center;
+  }
+
+  .menu{
+    justify-content: space-evenly !important;
+    height: 10vh;
+  }
+
+  .scroll-down-btn {
+    bottom: 170px;
+  }
+}

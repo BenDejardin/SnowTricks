@@ -11,11 +11,11 @@ add_trick:
    controller: App\Controller\TricksController::formTrick
 
 edit_trick:
-   path: /trick/edit/{id}
+   path: /trick/edit/{slug}
    controller: App\Controller\TricksController::formTrick
 
 trick_show:
-   path: /trick/{id}
+   path: /trick/{slug}
    controller: App\Controller\TricksController::show
 
 trick_delete:
@@ -41,3 +41,7 @@ app_verify_email:
 reply:
    path: trick/reply/{id}
    controller: App\Controller\TricksController::reply
+
+app_forgot_password_request: 
+   path: /reset-password
+   controller: App\Controller\ResetPasswordController::request
