@@ -1,3 +1,48 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+home:
+   path: /
+   controller: App\Controller\HomeController::index
+
+tricks:
+   path: /tricks
+   controller: App\Controller\TricksController::indexTricks
+
+add_trick:
+   path: /trick/add
+   controller: App\Controller\TricksController::formTrick
+
+edit_trick:
+   path: /trick/edit/{slug}
+   controller: App\Controller\TricksController::formTrick
+
+trick_show:
+   path: /trick/{slug}
+   controller: App\Controller\TricksController::show
+
+trick_delete:
+   path: /trick/delete/{id}
+   controller: App\Controller\TricksController::delete
+
+app_login:
+   path: /login
+   controller: App\Controller\SecurityController::login
+
+app_logout:
+   path: /logout
+   controller: App\Controller\SecurityController::logout
+
+app_register:
+   path: /register
+   controller: App\Controller\RegistrationController::register
+
+app_verify_email:
+   path: /verify/email
+   controller: App\Controller\RegistrationController::verifyUserEmail
+
+reply:
+   path: trick/reply/{id}
+   controller: App\Controller\TricksController::reply
+
+app_forgot_password_request: 
+   path: /reset-password
+   controller: App\Controller\ResetPasswordController::request
+
