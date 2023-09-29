@@ -28,7 +28,7 @@ class HomeController extends AbstractController
         // Recupere la premiere image de chaque trick
         $images = [];
         foreach ($tricks as $trick) {
-            $image = $this->entityManager->getRepository(Images::class)->findOneBy(['trick' => $trick->getId()]);
+            $image = $trick->getImages()[0];
             $images[] = $image ?? null;
         }
 

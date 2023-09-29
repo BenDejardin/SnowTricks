@@ -8,18 +8,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 // EntityType
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 // FileType
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-// TextType
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-// UrlType
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
-// TextareaType
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 // VideosType
 use App\Form\VideoType;
 

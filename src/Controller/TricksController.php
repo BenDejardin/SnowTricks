@@ -46,13 +46,11 @@ class TricksController extends AbstractController
         // Recupere la premiere image de chaque trick
         $images = [];
         foreach ($tricks as $trick) {
-            $image = $this->entityManager->getRepository(Images::class)->findOneBy(['trick' => $trick->getId()]);
+            $image = $trick->getImages()[0];
             $images[] = $image ?? null;
         }
-
-
         
-        return $this->render('tricks/tricks_index.html.twig', [
+        return $this->render('tricks/tricks.html.twig', [
             'tricks' => $tricks,
             'images' => $images
         ]);
@@ -105,9 +103,6 @@ class TricksController extends AbstractController
 
             // Récupérer les images soumises
             $uploadedFilesArray = $form->get('images')->getData();
-            // dump($uploadedFilesArray);
-            // dump($existingImages);
-            // dd($request->get('images'));
 
             // Supprime tous les images qui n'existe plus 
             $uploadImagesExist = $request->get('images');
@@ -122,7 +117,6 @@ class TricksController extends AbstractController
             foreach ($imagesToDelete as $image) {
                 
                 $imageEntity = $this->entityManager->getRepository(Images::class)->findOneBy(['path' => $image]);
-                // dd($imageEntity);
                 // Supprimez l'entité image de la base de données
                 $this->entityManager->remove($imageEntity);
 
@@ -168,9 +162,9 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
         }
 
-        $images = $this->entityManager->getRepository(Images::class)->findBy(['trick' => $trick->getId()]);
+        $images = $trick->getImages();
 
-        return $this->render('tricks/add_index.html.twig', [
+        return $this->render('tricks/edit.html.twig', [
             'form' => $form->createView(),
             'edit' => $edit,
             'images' => $images
@@ -189,7 +183,12 @@ class TricksController extends AbstractController
         }
 
         $discussion = new Discussions();
-        $discussions = $this->entityManager->getRepository(Discussions::class)->findBy(['trick' => $trick->getId()]);
+        $discussions = $this->entityManager->getRepository(Discussions::class)
+        ->createQueryBuilder('d')
+        ->join('d.author', 'a')
+        ->orderBy('a.isVerified', 'DESC')
+        ->getQuery()
+        ->getResult();
 
         $form = $this->createForm(DiscussionsType::class, $discussion);
         $form->handleRequest($request);
@@ -230,8 +229,8 @@ class TricksController extends AbstractController
         if (!$trick || $trick->getCreatedBy() != $this->getUser()) {
             return $this->redirectToRoute('tricks');
         }
-        $images = $this->entityManager->getRepository(Images::class)->findBy(['trick' => $id]);
-        $videos = $this->entityManager->getRepository(Videos::class)->findBy(['trick' => $id]);
+        $images = $trick->getImages();
+        $videos = $trick->getVideos();
         foreach ($images as $image) {
             $this->entityManager->remove($image);
         }
