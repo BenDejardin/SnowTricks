@@ -25,7 +25,7 @@ class Tricks
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'idTricks', targetEntity: Discussions::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Discussions::class, cascade: ['remove'])]
     private Collection $discussions;
 
     #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'tricks')]

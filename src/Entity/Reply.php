@@ -14,10 +14,11 @@ class Reply
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'replies', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'replies', cascade: ['remove'])]
     private ?Discussions $discussion = null;
 
-    #[ORM\ManyToOne(inversedBy: 'replies')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
     #[ORM\Column(type: Types::TEXT)]

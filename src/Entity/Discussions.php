@@ -29,7 +29,7 @@ class Discussions
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Reply::class)]
+    #[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Reply::class, cascade: ['remove'])]
     private Collection $replies;
 
     public function __construct()
