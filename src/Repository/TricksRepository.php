@@ -39,6 +39,14 @@ class TricksRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCreationDate()
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Tricks[] Returns an array of Tricks objects
 //     */

@@ -39,6 +39,20 @@ class DiscussionsRepository extends ServiceEntityRepository
         }
     }
 
+    public function getDiscussionJoinAuthor($trickId): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+        ->select('d', 'a')
+        ->from(Discussions::class, 'd')
+        ->join('d.author', 'a')
+        ->where('d.trick = :id_trick')
+        ->setParameter('id_trick', $trickId)
+        ->orderBy('a.isVerified', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+    }
+
 //    /**
 //     * @return Discussions[] Returns an array of Discussions objects
 //     */
